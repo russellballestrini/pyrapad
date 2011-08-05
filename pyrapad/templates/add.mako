@@ -5,12 +5,25 @@
   <h3>add a pad...</h3>
   
   <form action="/add">
+
     <label for="uri">uri</label>
-    <input name="uri" style="width:100%;" placeholder="uri"></input>
-    <br/>
+    <input 
+      id="uri" 
+      name="uri" 
+      type="text" 
+      style="width:100%;" 
+      placeholder="uri" 
+      />
+
     <label for="syntax">syntax</label>
-    <input name="syntax" style="width:100%;" placeholder="python, c++, perl, java, ect"}></input>
-    <br/>
+    <input
+      id="syntax" 
+      name="syntax" 
+      type="text" 
+      style="width:100%;" 
+      placeholder="python, c++, perl, java, ect"
+      />
+      
     <label for="data">data</label>
     <textarea name="data" rows="10" style="width:100%;" placeholder="data"></textarea>
     <input type="submit" value="submit" name="form.submitted"></input>

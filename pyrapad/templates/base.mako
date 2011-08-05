@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/static/skel/stylesheets/base.css"> 
   <link rel="stylesheet" href="/static/skel/stylesheets/skeleton.css"> 
   <link rel="stylesheet" href="/static/skel/stylesheets/layout.css"> 
+  <link rel="stylesheet" href="/static/skel/stylesheets/docs.css"> 
  
   <!-- Favicon
   ================================================== --> 

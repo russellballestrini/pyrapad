@@ -1,6 +1,7 @@
 <%inherit file="base.mako" />
 
-<div class="ten columns">
+##<div class="ten columns">
+<div class="nine columns content offset-by-one">
 
   <h3>${paste.uri.replace('-',' ')}</h3>
  
@@ -24,11 +25,30 @@
   <h3 id="reply">reply to this pad ...</h3>
 
   <form action="/${paste.id}/reply">
+
       <label for="syntax">syntax</label>
-      <input name="syntax" value="${paste.syntax}" style="width:100%;" placeholder="${paste.syntax}"></input>
+      <input 
+        id="syntax" 
+        name="syntax" 
+        type="text" 
+        value="${paste.syntax}" 
+        style="width:100%;" 
+        placeholder="${paste.syntax}" 
+        />
+
       <label for="data">data</label>
-      <textarea name="data" rows="${ len( paste.data.split('\n') ) + 2 }" style="width:100%;">${paste.data}</textarea>
-      <input type="submit" value="submit" name="form.submitted"></input>
+      <textarea 
+        id="data" 
+        name="data" 
+        rows="${ len( paste.data.split('\n') ) + 2 }" 
+        style="width:100%;">${paste.data}</textarea>
+
+      <input 
+        type="submit" 
+        value="submit" 
+        name="form.submitted"
+        />
+
   </form>
 
   % if replycount > 0:
