@@ -1,9 +1,10 @@
 <%inherit file="base.mako" />
 
 ##<div class="ten columns">
-<div class="nine columns content offset-by-one">
+##<div class="nine columns content offset-by-one">
+<div class="twelve columns content offset-by-one">
 
-  <h3>${paste.uri.replace('-',' ')}</h3>
+  <h1>${paste.uri.replace('-',' ').title()}</h1>
  
   <% replycount = len(pygnodes) %>
 
@@ -22,7 +23,7 @@
 
   <hr/>
 
-  <h3 id="reply">reply to this pad ...</h3>
+  <h2 id="reply">reply to this pad ...</h2>
 
   <form action="/${paste.id}/reply">
 

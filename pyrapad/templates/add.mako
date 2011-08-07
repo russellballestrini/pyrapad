@@ -1,8 +1,9 @@
 <%inherit file="base.mako" />
 
+##<div class="twelve columns">
 <div class="ten columns">
 
-  <h3>add a pad...</h3>
+  <h1>add a pad ...</h1>
   
   <form action="/add">
 
@@ -31,3 +32,33 @@
 
 </div>
 
+<div class="three columns">
+   <nav>
+     <h3>how to ...</h3>
+
+     <ol>
+       <li> Chose an optional markup syntax. </li>
+       <li> Paste your text data into <a href="http://pyrapad.com">Pyrapad</a>. </li>
+       <li> Hit submit to save and share! </li>
+     </ol>
+
+     <h3>say no to ...</h3>
+     <ol>
+       <li> registration </li>
+       <li> usernames </li>
+       <li> passwords </li>
+       <li> captchas </li>
+       <li> manditory fields </li>
+       <li> rules </li>
+     </ol>
+
+     <h3>say yes to ...</h3>
+     <ol>
+       <li> syntax prediction </li>
+       <li> syntax highlighting </li>
+       <li> pad replies </li>
+       <li> generated uri's </li>
+       <li> human readable uri's </li>
+     </ol>
+   </nav>
+</div>

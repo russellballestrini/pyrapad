@@ -35,6 +35,14 @@
   <link rel="stylesheet" href="/static/skel/stylesheets/layout.css"> 
   <link rel="stylesheet" href="/static/skel/stylesheets/docs.css"> 
  
+  <link rel="stylesheet" href="/static/custom.css"> 
+
+  <!-- Pygments
+  ================================================== --> 
+
+  <link rel=stylesheet HREF="/static/pygments/pygments-tango.css" TYPE="text/css"> 
+  ##<link rel=stylesheet HREF="/static/pygments/colorful.css" TYPE="text/css"> 
+
   <!-- Favicon
   ================================================== --> 
 
@@ -43,11 +51,6 @@
   <link rel="apple-touch-icon" sizes="72x72" href="/static/skel/images/apple-touch-icon-72x72.png" /> 
   <link rel="apple-touch-icon" sizes="114x114" href="/static/skel/images/apple-touch-icon-114x114.png" /> 
 
-  <!-- Pygments
-  ================================================== --> 
-
-  <link rel=stylesheet HREF="/static/pygments/pygments-tango.css" TYPE="text/css"> 
-  ##<link rel=stylesheet HREF="/static/pygments/colorful.css" TYPE="text/css"> 
 
 ${ google_analytics() }
 
@@ -56,53 +59,27 @@ ${ google_analytics() }
 
   <div class="container"> 
     <div class="three columns sidebar"> 
+
       <nav> 
+
         <h3 id="logo">pyrapad.com</h3> 
+
         <ul> 
           <li><a href="/">add a pad</a></li> 
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 
         </ul> 
+
       </nav> 
-     &nbsp;
+
+      &nbsp;
+      
     </div>
 
       ${next.body()}
     
-    <div class="three columns">
-
-      <h3>how to ...</h3>
-      <ol>
-        <li> Chose an optional markup syntax. </li>
-        <li> Paste your text data into <a href="http://pyrapad.com">Pyrapad</a>. </li>
-        <li> Hit submit to save and share! </li>
-      </ol>
-
-      <br/>
-
-      <h3>say no ...</h3>
-      <ul>
-        <li> no registration </li>
-        <li> no login </li>
-        <li> no usernames </li>
-        <li> no passwords </li>
-        <li> no captchas </li>
-        <li> no manditory fields </li>
-        <li> no rules </li>
-      </ul>
-
-      <br/>
-
-      <h3>say yes!</h3>
-      <ul>
-        <li> yes syntax prediction </li>
-        <li> yes syntax highlighting </li>
-        <li> yes pad replies </li>
-        <li> yes generated uri's </li>
-        <li> yes human readable uri's </li>
-      </ul>
-      
-    </div>
+    ##<div class="three columns">
+    ##</div>
 
   </div>
 
