@@ -20,10 +20,10 @@ def add( request ):
         except KeyError:
             return { 'error': 'uri and data fields are required.' }
         
-        try:
+        if request.params['syntax']:
             form_syntax = request.params['syntax']
-        except KeyError:
-            form_syntax = None 
+        else:
+            form_syntax = guess_lexer( form_data ).aliases[0]
 
         paste = Paste( form_uri )
         node = Node( form_data, form_syntax )
