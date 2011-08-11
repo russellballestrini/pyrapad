@@ -13,7 +13,10 @@ def wordCount( document ):
     return len( document.split() )
 
 def idf(word, documentList):
-    return math.log( len( documentList ) / numDocsContaining( word, documentList ) )
+    try:
+        return math.log( len( documentList ) / numDocsContaining( word, documentList ) )
+    except ZeroDivisionError:
+        return False
 
 def numDocsContaining( word, documentList ):
     count = 0
@@ -23,7 +26,10 @@ def numDocsContaining( word, documentList ):
     return count
 
 def tfidf( word, document, documentList ):
-  return ( tf( word, document ) * idf( word,documentList ) )
+  if len( word ) > 2: # prevent 1 and 2 letter words from scoring
+      return ( tf( word, document ) * idf( word,documentList ) )
+  else:
+      return False
 
 if __name__ == '__main__':
     documentList = []
@@ -33,6 +39,6 @@ if __name__ == '__main__':
     words = {}
     documentNumber = 0
     for word in documentList[documentNumber].split(None):
-        words[word] = tfidf(word,documentList[documentNumber],documentList)
-    for item in sorted(words.items(), key=itemgetter(1), reverse=True):
+        words[word] = tfidf( word, documentList[documentNumber], documentList )
+    for item in sorted( words.items(), key=itemgetter(1), reverse=True ):
         print "%f <= %s" % (item[1], item[0])

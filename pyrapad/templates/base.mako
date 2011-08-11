@@ -68,6 +68,7 @@ ${ google_analytics() }
           <li><a href="/">add a pad</a></li> 
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 
+          <li><a href="/syntaxes">syntaxes</a></li> 
         </ul> 
 
       </nav> 

@@ -22,11 +22,11 @@
       name="syntax" 
       type="text" 
       style="width:100%;" 
-      placeholder="python, c++, perl, java, ect"
+      placeholder="python, c++, perl, java, ect ... we guess poorly"
       />
       
     <label for="data">data</label>
-    <textarea name="data" rows="10" style="width:100%;" placeholder="data"></textarea>
+    <textarea name="data" rows="12" style="width:100%;" placeholder="data"></textarea>
     <input type="submit" value="submit" name="form.submitted"></input>
   </form>
 
@@ -44,17 +44,17 @@
 
      <h3>say no to ...</h3>
      <ol>
-       <li> registration </li>
        <li> usernames </li>
        <li> passwords </li>
+       <li> registration </li>
        <li> captchas </li>
-       <li> manditory fields </li>
+       ##<li> manditory fields </li>
        <li> rules </li>
      </ol>
 
      <h3>say yes to ...</h3>
      <ol>
-       <li> syntax prediction </li>
+       ##<li> syntax prediction </li>
        <li> syntax highlighting </li>
        <li> pad replies </li>
        <li> generated uri's </li>

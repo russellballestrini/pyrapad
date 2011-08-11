@@ -10,3 +10,4 @@ dev.ini
 *.cache
 *.lock
 data
+pyrapad/lib/gist
