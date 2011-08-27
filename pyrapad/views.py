@@ -10,6 +10,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
 
 import webhelpers.paginate as paginate
+from webhelpers.html.builder import literal
 
 from datetime import datetime as dt
 
@@ -74,7 +75,7 @@ def show( request ):
         #formatter = HtmlFormatter( style='colorful' )
         #formatter = HtmlFormatter( style='tango' )
         formatter = HtmlFormatter( linenos=True, style='tango' )
-        pygnodes.append( highlight( node.data, lexer, formatter ) )
+        pygnodes.append( literal( highlight( node.data, lexer, formatter ) ) )
 
     pygpad = pygnodes[-1]
     pygnodes = pygnodes[:-1]
