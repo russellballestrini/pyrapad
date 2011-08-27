@@ -56,4 +56,4 @@
     <br />
   % endfor
 
-  <div class="paginate" style="font-size: 1.5em;text-align: center;font-weight: bold;"> more ${pads.pager()}</div>
+  <div class="paginate" style="font-size: 1.5em;text-align: center;font-weight: bold;"> pages ${pads.pager()}</div>
