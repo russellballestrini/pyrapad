@@ -49,7 +49,7 @@
       created ${ago} ago
       <br />
       <a href="${pad.id}/${pad.uri}">
-        ${pygpad}
+        ${pygpad | n}
       </a> 
       ... view all <a href="${pad.id}/${pad.uri}">${ pad.data.count('\n') + 1 }</a> lines
     </div>

@@ -17,7 +17,7 @@
 
   <hr/>
 
-  <span class="pad">${pygpad}</span>
+  <span class="pad">${pygpad | n}</span>
 
   <hr/>
 
@@ -54,7 +54,7 @@
     <h3 id="replies">replies ...</h3>
     <br/>
     % for node in pygnodes:
-      <div class="node">${node}</div>
+      <div class="node">${node | n}</div>
       <hr/>
     % endfor
   % endif
