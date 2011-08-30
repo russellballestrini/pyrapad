@@ -23,7 +23,7 @@
 
   <h2 id="reply">reply to this pad ...</h2>
 
-  <form action="/${pad.id}/reply">
+  <form action="/${pad.id}/reply" method="post">
 
       <label for="syntax">syntax</label>
       <input 

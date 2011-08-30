@@ -5,7 +5,7 @@
 
   <h1>add a pad ...</h1>
   
-  <form action="/add">
+  <form action="/add" method="post">
 
     <label for="uri">uri</label>
     <input 
