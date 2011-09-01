@@ -62,7 +62,7 @@ ${ google_analytics() }
 
       <nav> 
 
-        <h3 id="logo">pyrapad.com</h3> 
+        <h3 id="logo"><a href="${request.host}" style="text-decoration: none;">${request.host}</a></h3> 
 
         <ul> 
           <li><a href="/">add a pad</a></li> 
