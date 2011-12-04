@@ -2,7 +2,7 @@ from pyrapad.models import DBSession
 from pyrapad.models import Pad, Node
 from pyrapad.models import get_pad, get_all_pads, get_all_syntaxes
 
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name, guess_lexer
@@ -19,6 +19,7 @@ def add( request ):
 
     if 'form.submitted' in request.params: # handle form
         try:
+            if request.params['semail'] != '': return HTTPNotFound()
             form_uri = request.params['uri'].replace(' ', '-')
             form_data = request.params['data']
             #form_syntax = request.params['syntax']
@@ -90,6 +91,8 @@ def reply( request ):
 
     if not pad: # redirect home if invalid id
         return HTTPFound( location = '/' )
+
+    if request.params['semail'] != '': return HTTPNotFound()
 
     node = Node( request.params['data'], request.params['syntax'] )
     pad.nodes.append( node )

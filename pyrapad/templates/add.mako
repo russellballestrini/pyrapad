@@ -24,6 +24,16 @@
       style="width:100%;" 
       placeholder="python, c++, perl, java, ect ... we guess poorly"
       />
+    
+    <label for="semail" class="semail">email</label>
+    <input
+      id="semail" 
+      name="semail" 
+      class="semail" 
+      type="text" 
+      style="width:100%;" 
+      placeholder="you@example.com"
+      />
       
     <label for="data">data</label>
     <textarea name="data" rows="12" style="width:100%;" placeholder="data"></textarea>

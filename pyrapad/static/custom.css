@@ -12,3 +12,13 @@ pre {
 .linenos{
   padding-right: 1em;
 }
+
+
+label.semail{
+  display: none;
+}
+
+input.semail{
+  display: none;
+}
+
