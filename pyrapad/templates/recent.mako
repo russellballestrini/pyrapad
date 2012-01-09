@@ -14,7 +14,8 @@
 
   % for i, pad in enumerate( pads ):
   <% 
-    pygpad = pygpads[i] 
+    data = pad.data.split( '\n', 7 )[:7]
+    data = '\n'.join( data )
 
     chart = {
       4 : 'day',
@@ -35,10 +36,8 @@
     
     type  = chart[len(parts)]
     count = str(parts[0])
-    s     = 's'
-
     # determine if plural
-    if parts[0] == 1: s = ''
+    s = '' if parts[0] == 1 else 's'
 
     ago = count + ' ' + type + s
   %>
@@ -48,8 +47,8 @@
       <a href="${pad.id}/${pad.uri}">${pad.uri}</a> 
       created ${ago} ago
       <br />
-      <a href="${pad.id}/${pad.uri}">
-        ${pygpad | n}
+      <a href="${pad.id}/${pad.uri}" style="text-decoration: none;">
+        <pre>${data}</pre>
       </a> 
       ... view all <a href="${pad.id}/${pad.uri}">${ pad.data.count('\n') + 1 }</a> lines
     </div>

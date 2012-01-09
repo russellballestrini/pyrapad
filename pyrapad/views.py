@@ -122,21 +122,9 @@ def recent( request ):
     page_url = paginate.PageURL_WebOb( request )
     pads = paginate.Page( pads, current_page, url=page_url, items_per_page=20 )
 
-    # get first 5 lines of each pad and run it into pygments
-    pygpads = []
-    for pad in pads:
-        # get the first 5 lines in the pad
-        data = pad.data.split( '\n', 5 )[:5]
-        data = '\n'.join( data )
-
-        lexer = get_lexer_by_name( pad.syntax )
-        #formatter = HtmlFormatter( style='tango' )
-        formatter = HtmlFormatter( linenos=True, style='tango' )
-        pygpads.append( highlight( data, lexer, formatter ) )
-
     timenow = dt.now()
 
-    return { 'pads': pads, 'pygpads': pygpads, 'pad_count': pad_count, 'current_page': current_page, 'timenow': timenow } 
+    return { 'pads': pads, 'pad_count': pad_count, 'current_page': current_page, 'timenow': timenow } 
 
 def syntaxes( request ):
     """list the supported syntaxes"""
