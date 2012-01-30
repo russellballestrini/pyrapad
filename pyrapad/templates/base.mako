@@ -30,18 +30,19 @@
   <!-- CSS
   ================================================== --> 
 
-  <link rel="stylesheet" href="/static/skel/stylesheets/base.css"> 
-  <link rel="stylesheet" href="/static/skel/stylesheets/skeleton.css"> 
-  <link rel="stylesheet" href="/static/skel/stylesheets/layout.css"> 
-  <link rel="stylesheet" href="/static/skel/stylesheets/docs.css"> 
+  ##<link rel="stylesheet" href="/static/skel/stylesheets/base.css"> 
+  ##<link rel="stylesheet" href="/static/skel/stylesheets/skeleton.css"> 
+  ##<link rel="stylesheet" href="/static/skel/stylesheets/layout.css"> 
+  ##<link rel="stylesheet" href="/static/skel/stylesheets/docs.css"> 
  
   <link rel="stylesheet" href="/static/custom.css"> 
 
   <!-- Pygments
   ================================================== --> 
 
-  <link rel=stylesheet HREF="/static/pygments/pygments-tango.css" TYPE="text/css"> 
+  ##<link rel=stylesheet HREF="/static/pygments/pygments-tango.css" TYPE="text/css"> 
   ##<link rel=stylesheet HREF="/static/pygments/colorful.css" TYPE="text/css"> 
+  <link rel=stylesheet HREF="/static/pygments/native.css" TYPE="text/css"> 
 
   <!-- Favicon
   ================================================== --> 
@@ -51,6 +52,8 @@
   <link rel="apple-touch-icon" sizes="72x72" href="/static/skel/images/apple-touch-icon-72x72.png" /> 
   <link rel="apple-touch-icon" sizes="114x114" href="/static/skel/images/apple-touch-icon-114x114.png" /> 
 
+  <script type="text/javascript" src="/static/js/jquery.js"></script>
+
 
 ${ google_analytics() }
 
@@ -58,33 +61,24 @@ ${ google_analytics() }
 <body>
 
   <div class="container"> 
-    <div class="three columns sidebar"> 
 
-      <nav> 
+      <nav>  
 
-        <h3 id="logo"><a href="${request.host}" style="text-decoration: none;">${request.host}</a></h3> 
+        <b><a href="http://${request.host}" style="text-decoration: none;">${request.host}</a></b> 
 
         <ul> 
-          <li><a href="/">add a pad</a></li> 
+          <li><a href="#" onClick="document.forms[0].submit();">save pad</a></li> 
+          <li><a href="/">new pad</a></li> 
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 
-          <li><a href="/syntaxes">syntaxes</a></li> 
+          ##<li><a href="/syntaxes">syntaxes</a></li> 
         </ul> 
 
       </nav> 
 
-      &nbsp;
-      
-    </div>
-
-      ${next.body()}
-    
-    ##<div class="three columns">
-    ##</div>
+  ${next.body()}
 
   </div>
-
-<br><br>
 
 </body>
 </html>

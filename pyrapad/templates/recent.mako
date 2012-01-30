@@ -41,11 +41,12 @@
 
     ago = count + ' ' + type + s
   %>
-    <hr />
-    <div>
-      <a href="/recent-${pad.syntax}-pads">${pad.syntax}:</a> 
+    <div style="padding-top: 40px;">
+      <b>
+      ##<a href="/recent-${pad.syntax}-pads">${pad.syntax}:</a> 
+      created ${ago} ago | 
       <a href="${pad.id}/${pad.uri}">${pad.uri}</a> 
-      created ${ago} ago
+      </b>
       <br />
       <a href="${pad.id}/${pad.uri}" style="text-decoration: none;">
         <pre>${data}</pre>

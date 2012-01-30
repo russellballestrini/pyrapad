@@ -13,32 +13,28 @@ import webhelpers.paginate as paginate
 
 from datetime import datetime as dt
 
+from uuid import uuid4
+
 def add( request ):
     """homepage and add pad page"""  
+
     uri = data = ''
 
-    if 'form.submitted' in request.params: # handle form
-        try:
-            if request.params['semail'] != '': return HTTPNotFound()
-            form_uri = request.params['uri'].replace(' ', '-')
-            form_data = request.params['data']
-            #form_syntax = request.params['syntax']
-            if not form_uri or not form_data:
-                return { 'error': 'uri and data fields are required.' }
+    try:
+        data = request.params['data']
+    except:
+        data = ''
+    if data:
+        if request.params['semail'] != '': return HTTPNotFound()
 
-        except KeyError:
-            return { 'error': 'uri and data fields are required.' }
+        uri = str( uuid4() ) 
         
         # this block supports syntax guessing,
         # but it doesn't work well ...
-        form_syntax = request.params['syntax']
-        try: 
-            form_syntax = get_lexer_by_name( form_syntax ).aliases[0]
-        except ClassNotFound:
-            form_syntax = guess_lexer( form_data ).aliases[0]
+        syntax = guess_lexer( data ).aliases[0]
 
-        pad = Pad( form_uri )
-        node = Node( form_data, form_syntax )
+        pad = Pad( uri )
+        node = Node( data, syntax )
  
         pad.nodes.append( node )       
  
@@ -48,7 +44,7 @@ def add( request ):
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
     else: # display form
-        return { 'uri': uri, 'data': data }
+        return { 'title': 'Add a pad', 'uri': uri, 'data': data }
 
 def show( request ):
     """show the pad and reply form"""
@@ -72,9 +68,11 @@ def show( request ):
             lexer = get_lexer_by_name( node.syntax )
         except ClassNotFound:
             lexer = guess_lexer( node.data )
+        formatter = HtmlFormatter( linenos=True, style='native' )
+        #formatter = HtmlFormatter( linenos=True, style='colorful' )
         #formatter = HtmlFormatter( style='colorful' )
+        #formatter = HtmlFormatter( linenos=True, style='tango' )
         #formatter = HtmlFormatter( style='tango' )
-        formatter = HtmlFormatter( linenos=True, style='tango' )
         pygnodes.append( highlight( node.data, lexer, formatter ) )
 
     pygpad = pygnodes[-1]
