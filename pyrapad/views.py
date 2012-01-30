@@ -83,7 +83,7 @@ def raw( request ):
     try: # if missing url string
         pad_id = request.matchdict['uri']
     except KeyError:
-        return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
+        return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri + '/raw' )
 
     return pad.data
 
