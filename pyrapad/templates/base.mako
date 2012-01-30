@@ -69,6 +69,11 @@ ${ google_analytics() }
         <ul> 
           <li><a href="#" onClick="document.forms[0].submit();">save pad</a></li> 
           <li><a href="/">new pad</a></li> 
+          % if pad:
+              <li><a href="/${pad.id}/${pad.uri}/raw">raw pad</a></li> 
+          % else:
+              <li>raw pad</li> 
+          % endif
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 
           ##<li><a href="/syntaxes">syntaxes</a></li> 

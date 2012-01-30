@@ -1,2 +1,2 @@
 <%inherit file="base.mako" />
-${pygpad | n}
+${pygdata | n}

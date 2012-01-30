@@ -47,7 +47,7 @@ def add( request ):
         return { 'title': 'Add a pad', 'uri': uri, 'data': data }
 
 def show( request ):
-    """show the pad and reply form"""
+    """show the pad"""
     # prettier varible
     pad_id = request.matchdict['id']
     # query for the pad object by id
@@ -61,24 +61,31 @@ def show( request ):
     except KeyError:
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
-    pygnodes = []
+    try: 
+        lexer = get_lexer_by_name( pad.syntax )
+    except ClassNotFound:
+        lexer = guess_lexer( pad.data )
+    formatter = HtmlFormatter( linenos=True, style='native' )
+    pygdata = highlight( pad.data, lexer, formatter )
 
-    for node in pad.nodes:
-        try: 
-            lexer = get_lexer_by_name( node.syntax )
-        except ClassNotFound:
-            lexer = guess_lexer( node.data )
-        formatter = HtmlFormatter( linenos=True, style='native' )
-        #formatter = HtmlFormatter( linenos=True, style='colorful' )
-        #formatter = HtmlFormatter( style='colorful' )
-        #formatter = HtmlFormatter( linenos=True, style='tango' )
-        #formatter = HtmlFormatter( style='tango' )
-        pygnodes.append( highlight( node.data, lexer, formatter ) )
+    return { 'pad': pad, 'pygdata': pygdata }
 
-    pygpad = pygnodes[-1]
-    pygnodes = pygnodes[:-1]
+def raw( request ):
+    """show the raw text pad"""
+    # prettier varible
+    pad_id = request.matchdict['id']
+    # query for the pad object by id
+    pad = get_pad( pad_id )   
 
-    return { 'pad': pad, 'pygpad': pygpad, 'pygnodes': pygnodes }
+    if not pad: # redirect home if invalid id
+        return HTTPFound( location = '/' )
+
+    try: # if missing url string
+        pad_id = request.matchdict['uri']
+    except KeyError:
+        return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
+
+    return pad.data
 
 def reply( request ):
     """handle pad reply"""

@@ -36,6 +36,12 @@ def main(global_config, **settings):
     config.add_route( 'reply', '/{id}/reply' )
     config.add_view( 'pyrapad.views.reply', route_name='reply' )
 
+    config.add_route( 'raw', '{id}/{uri:.*}/raw' )
+    config.add_view( 'pyrapad.views.raw', route_name='raw', renderer='string' )
+
+    config.add_route( 'raw2', '{id}/raw' )
+    config.add_view( 'pyrapad.views.raw', route_name='raw2', renderer='string' )
+
     config.add_route( 'show', '{id}/{uri:.*}' )
     config.add_view( 'pyrapad.views.show', route_name='show', renderer='show.mako' )
 
