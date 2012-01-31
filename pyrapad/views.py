@@ -15,26 +15,25 @@ from datetime import datetime as dt
 
 from uuid import uuid4
 
-def add( request ):
-    """homepage and add pad page"""  
+def save( request ):
+    """homepage and save pad page"""  
+    try: data = request.params['data']
+    except: data = ''
 
-    uri = data = ''
+    try: data_form = request.params['data_form']
+    except: data_form = ''
 
-    try:
-        data = request.params['data']
-    except:
-        data = ''
-    if data:
+    if data_form:
         if request.params['semail'] != '': return HTTPNotFound()
 
         uri = str( uuid4() ) 
         
         # this block supports syntax guessing,
         # but it doesn't work well ...
-        syntax = guess_lexer( data ).aliases[0]
+        syntax = guess_lexer( data_form ).aliases[0]
 
         pad = Pad( uri )
-        node = Node( data, syntax )
+        node = Node( data_form, syntax )
  
         pad.nodes.append( node )       
  
@@ -44,7 +43,7 @@ def add( request ):
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
     else: # display form
-        return { 'title': 'Add a pad', 'uri': uri, 'data': data }
+        return { 'title': 'Add a pad', 'data': data }
 
 def show( request ):
     """show the pad"""
@@ -87,22 +86,17 @@ def raw( request ):
 
     return pad.data
 
-def reply( request ):
-    """handle pad reply"""
+def clone( request ):
+    """clone the given pad"""
     # prettier varible
     pad_id = request.matchdict['id']
-    # query for the papad object by id
+    # query for the pad object by id
     pad = get_pad( pad_id )   
 
     if not pad: # redirect home if invalid id
         return HTTPFound( location = '/' )
 
-    if request.params['semail'] != '': return HTTPNotFound()
-
-    node = Node( request.params['data'], request.params['syntax'] )
-    pad.nodes.append( node )
-
-    return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
+    return { 'title': 'Add a pad', 'data': pad.data }
 
 
 def random( request ):

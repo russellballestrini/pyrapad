@@ -19,10 +19,10 @@ def main(global_config, **settings):
     config.add_static_view('static', 'pyrapad:static')
 
     config.add_route( 'home', '/' )
-    config.add_view( 'pyrapad.views.add', route_name='home', renderer='add.mako' )
+    config.add_view( 'pyrapad.views.save', route_name='home', renderer='save.mako' )
 
-    config.add_route( 'add', '/add' )
-    config.add_view( 'pyrapad.views.add', route_name='add', renderer='add.mako' )
+    config.add_route( 'save', '/save' )
+    config.add_view( 'pyrapad.views.save', route_name='save', renderer='save.mako' )
 
     config.add_route( 'random', '/random' )
     config.add_view( 'pyrapad.views.random', route_name='random' )
@@ -33,8 +33,11 @@ def main(global_config, **settings):
     config.add_route( 'syntaxes', '/syntaxes' )
     config.add_view( 'pyrapad.views.syntaxes', route_name='syntaxes', renderer='syntaxes.mako' )
 
-    config.add_route( 'reply', '/{id}/reply' )
-    config.add_view( 'pyrapad.views.reply', route_name='reply' )
+    config.add_route( 'clone', '{id}/{uri:.*}/clone' )
+    config.add_view( 'pyrapad.views.clone', route_name='clone', renderer='save.mako' )
+
+    config.add_route( 'clone2', '{id}/clone' )
+    config.add_view( 'pyrapad.views.clone', route_name='clone2', renderer='save.mako' )
 
     config.add_route( 'raw', '{id}/{uri:.*}/raw' )
     config.add_view( 'pyrapad.views.raw', route_name='raw', renderer='string' )

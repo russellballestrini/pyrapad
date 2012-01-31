@@ -1,8 +1,8 @@
 <%inherit file="base.mako" />
 
   <div class="dinker">></div>
-  <form action="/add" method="post">
-    <textarea name="data" spellcheck="false" autofocus></textarea>
+  <form action="/save" method="post">
+    <textarea name="data_form" spellcheck="false" autofocus>${data}</textarea>
     <label for="semail" class="semail">email</label>
     <input
       id="semail" 
