@@ -2,7 +2,8 @@ body {
   background-color: #002B36;
   background-color: #1c4e63;
   color: #f9f9f9;
-  font-size: 16px;
+  font-size: 18px;
+  font-family: monospace;
   margin: 0px;
   padding: 20px;
   padding-right: 60px;
@@ -12,7 +13,7 @@ body {
 textarea:focus, textarea {
   background: transparent;
   font-family: monospace;
-  font-size: 13px;
+  font-size: 18px;
   color: #ffffff;
   border: 0px;
   border-top-width: 0px;
@@ -34,13 +35,24 @@ textarea:focus, textarea {
 }
 
 .dinker {
+  color: #9F9F9F;
+  font-weight: bold;
   position: absolute;
-  left: 35px;
+  left: 25px;
+}
+
+.highlighttable{
+  font-size: 18px;
+  margin: 0px;
 }
 
 .linenos{
   color: #9f9f9f;
   padding-right: 1em;
+}
+
+pre {
+  margin: 0px;
 }
 
 label.semail{
