@@ -20,8 +20,8 @@ def save( request ):
     try: data = request.params['data']
     except: data = ''
 
-    try: data_form = request.params['data_form']
-    except: data_form = ''
+    try: data_form = unicode( request.params['data_form'] )
+    except: data_form = u''
 
     if data_form:
         if request.params['semail'] != '': return HTTPNotFound()
