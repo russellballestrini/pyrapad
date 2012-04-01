@@ -1,6 +1,6 @@
 import transaction
 
-from sqlalchemy import Integer, Unicode, String, Text, Boolean, DateTime
+from sqlalchemy import Integer, String, UnicodeText, Boolean, DateTime
 from sqlalchemy import Column, ForeignKey, desc, asc
 
 from sqlalchemy.sql.expression import distinct
@@ -32,7 +32,7 @@ class Node( Base ):
     pad_id  = Column( Integer, ForeignKey( 'pad.id' ), nullable = False )
     created   = Column( DateTime )
     syntax    = Column( String(16), nullable = True )
-    data      = Column( Text, nullable = False )
+    data      = Column( UnicodeText, nullable = False )
     disabled  = Column( Boolean, default = False )
 
     def __init__( self, data, syntax=None ):
