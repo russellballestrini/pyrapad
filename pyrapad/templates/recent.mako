@@ -1,5 +1,7 @@
 <%inherit file="base.mako" />
 
+<%namespace name="m" module="pyrapad.lib.makofuncs"/>
+
 <div class="twelve columns content offset-by-one">
 
   % if current_page == 1:
@@ -17,41 +19,24 @@
     data = pad.data.split( '\n', 7 )[:7]
     data = '\n'.join( data )
 
-    chart = {
-      4 : 'day',
-      3 : 'hour',
-      2 : 'minute',
-      1 : 'second'
-    }
-
     delta = timenow - pad.created
+    ago = m.humandelta( delta, 2 )
 
-    ## parts tuple ( days, hours, minutes, seconds )
-    parts = ( delta.days, delta.seconds/3600, (delta.seconds/60)%60, delta.seconds )
-
-    ## remove leading zeros
-    for part in parts:
-        if part: break
-        else: parts = parts[1:]
-    
-    type  = chart[len(parts)]
-    count = str(parts[0])
-    # determine if plural
-    s = '' if parts[0] == 1 else 's'
-
-    ago = count + ' ' + type + s
   %>
     <div style="padding-top: 40px;">
       <b>
       ##<a href="/recent-${pad.syntax}-pads">${pad.syntax}:</a> 
-      created ${ago} ago | 
+      created ${ago} ago  
+      <br/>
       <a href="${pad.id}/${pad.uri}">${pad.uri}</a> 
       </b>
       <br />
       <a href="${pad.id}/${pad.uri}" style="text-decoration: none;">
         <pre>${data}</pre>
       </a> 
+      <b>
       ... view all <a href="${pad.id}/${pad.uri}">${ pad.data.count('\n') + 1 }</a> lines
+      </b>
     </div>
     <br />
   % endfor

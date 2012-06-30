@@ -11,3 +11,4 @@ dev.ini
 *.lock
 data
 pyrapad/lib/gist
+*.egg*

@@ -1,5 +1,5 @@
 from pyrapad.models import DBSession
-from pyrapad.models import Pad, Node
+from pyrapad.models import Pad
 from pyrapad.models import get_pad, get_all_pads, get_all_syntaxes
 
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
@@ -32,10 +32,10 @@ def save( request ):
         # but it doesn't work well ...
         syntax = guess_lexer( data_form ).aliases[0]
 
-        pad = Pad( uri )
-        node = Node( data_form, syntax )
- 
-        pad.nodes.append( node )       
+        pad = Pad( uri, data_form, syntax )
+        #pad = Pad( uri )
+        #node = Node( data_form, syntax )
+        #pad.nodes.append( node )       
  
         DBSession.add( pad )
         DBSession.flush()
