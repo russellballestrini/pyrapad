@@ -129,6 +129,7 @@ def syntaxes( request ):
 
 def alter( request ):
     """alter the pad"""
+    from slugify import slugify
 
     # prettier varible
     pad_id = request.matchdict['id']
@@ -145,7 +146,7 @@ def alter( request ):
 
     if 'save' in request.POST:
 
-        try: pad.uri = request.params['newuri'].replace( ' ', '-' )
+        try: pad.uri = slugify( request.params['newuri'] )
         except: pass 
 
 

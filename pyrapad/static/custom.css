@@ -70,12 +70,17 @@ input.semail{
 }
 
 #settingsdiv {
-  position: relative; right: -50%;
+  position: relative;
+  right: -50%;
+  top: 110px;
   background-image: url("/static/trans.png");
   background-image: url("/static/diagonal-stripes.png");
   width: 260px;
   padding: 20px;
   text-align: left;
+  background-color: #002B36;
+  background-color: #1c4e63;
+  background-color: #194457;
 }
 
 nav {
@@ -84,6 +89,7 @@ nav {
   right: 25px;
   background-image: url("/static/trans.png");
   background-image: url("/static/diagonal-stripes.png");
+  background-color: #194457;
   padding: 20px;
 }
 

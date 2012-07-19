@@ -58,11 +58,13 @@
 // this toggles the dropdown
 function toggle( target, button, origtext ){
     if ( !$('#' + target + ":visible").size() ){
-        $('#' + target).slideDown( "slow" );
+        //$('#' + target).slideDown( "slow" );
+        $('#' + target).fadeIn( "slow" );
         $('#' + button).text( "hide" );
     }
     else {
-        $('#' + target).slideUp( "slow" );
+        //$('#' + target).slideUp( "slow" );
+        $('#' + target).fadeOut( "slow" );
         $('#' + button).text( origtext );
     }
 }
@@ -101,25 +103,26 @@ ${ google_analytics() }
       </nav> 
 
   % try:
-  <% pad %>
-  <form action="/${pad.id}/${pad.uri}/alter" id="settingsform" method="post" style="display: none;">
-    <div id="settingsdiv">
-        uri:
-        <br/>
-        <input id="renametext" value="${pad.uri}" size="35" name="newuri"/> 
-        <br/>
-        <br/>
-        syntax:
-        <br/>
-        <input id="syntaxtext" value="${pad.syntax}" size="35" name="newsyntax"/>
-        <br/>
-        <br/>
-        <center>
-        <input type="submit" value="cancel" name="cancel"/> 
-        <input type="submit" value="save" name="save"/> 
-        </center>
-    </div>
-  </form>
+    % if pad:
+      <form action="/${pad.id}/${pad.uri}/alter" id="settingsform" method="post" style="display: none;">
+        <div id="settingsdiv">
+            uri:
+            <br/>
+            <input id="renametext" value="${pad.uri}" size="35" name="newuri"/> 
+            <br/>
+            <br/>
+            syntax:
+            <br/>
+            <input id="syntaxtext" value="${pad.syntax}" size="35" name="newsyntax"/>
+            <br/>
+            <br/>
+            <center>
+            <input type="button" value="cancel" name="cancel" onClick="javascript: toggle('settingsform', 'alterlink', 'alter pad')"/> 
+            <input type="submit" value="save" name="save"/> 
+            </center>
+        </div>
+    </form>
+    % endif
   % except:
   % endtry  
 

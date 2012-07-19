@@ -19,6 +19,7 @@ requires = [
     'webhelpers', # pagination
     'ago', # human readable timedelta
     'pastescript', # paster
+    'slugify', # powerful uri slug lib
     ]
 
 if sys.version_info[:3] < (2,5,0):
