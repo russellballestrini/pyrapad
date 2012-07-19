@@ -102,7 +102,6 @@ ${ google_analytics() }
 
       </nav> 
 
-  % try:
     % if pad:
       <form action="/${pad.id}/${pad.uri}/alter" id="settingsform" method="post" style="display: none;">
         <div id="settingsdiv">
@@ -123,8 +122,6 @@ ${ google_analytics() }
         </div>
     </form>
     % endif
-  % except:
-  % endtry  
 
   ${next.body()}
 
