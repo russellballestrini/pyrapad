@@ -8,6 +8,7 @@ body {
   padding: 20px;
   padding-right: 60px;
   padding-bottom: 60px;
+  /*background-image: url("/static/diagonal-stripes.png");*/
 }
 
 textarea:focus, textarea {
@@ -63,12 +64,27 @@ input.semail{
   display: none;
 }
 
+#settingsform {
+  position: absolute; right: 50%;
+  text-align:center;
+}
+
+#settingsdiv {
+  position: relative; right: -50%;
+  background-image: url("/static/trans.png");
+  background-image: url("/static/diagonal-stripes.png");
+  width: 260px;
+  padding: 20px;
+  text-align: left;
+}
+
 nav {
   position: fixed; 
   top: 15px; 
   right: 25px;
   background-image: url("/static/trans.png");
-  padding: 15px;
+  background-image: url("/static/diagonal-stripes.png");
+  padding: 20px;
 }
 
 nav ul {

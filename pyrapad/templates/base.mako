@@ -54,6 +54,19 @@
 
   <script type="text/javascript" src="/static/js/jquery.js"></script>
 
+<script type="text/javascript">
+// this toggles the dropdown
+function toggle( target, button, origtext ){
+    if ( !$('#' + target + ":visible").size() ){
+        $('#' + target).slideDown( "slow" );
+        $('#' + button).text( "hide" );
+    }
+    else {
+        $('#' + target).slideUp( "slow" );
+        $('#' + button).text( origtext );
+    }
+}
+</script>
 
 ${ google_analytics() }
 
@@ -72,16 +85,43 @@ ${ google_analytics() }
           % if pad:
               <li><a href="/${pad.id}/${pad.uri}/raw">raw pad</a></li> 
               <li><a href="/${pad.id}/${pad.uri}/clone">clone pad</a></li> 
+              <li><a href="javascript: toggle('settingsform', 'alterlink', 'alter pad')" id="alterlink">alter pad</a></li> 
+              
           % else:
               <li>raw pad</li> 
               <li>clone pad</li> 
+              <li>alter pad</li> 
           % endif
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 
           ##<li><a href="/syntaxes">syntaxes</a></li> 
+          ##<li><a href="/about">about pad</a></li> 
         </ul> 
 
       </nav> 
+
+  % try:
+  <% pad %>
+  <form action="/${pad.id}/${pad.uri}/alter" id="settingsform" method="post" style="display: none;">
+    <div id="settingsdiv">
+        uri:
+        <br/>
+        <input id="renametext" value="${pad.uri}" size="35" name="newuri"/> 
+        <br/>
+        <br/>
+        syntax:
+        <br/>
+        <input id="syntaxtext" value="${pad.syntax}" size="35" name="newsyntax"/>
+        <br/>
+        <br/>
+        <center>
+        <input type="submit" value="cancel" name="cancel"/> 
+        <input type="submit" value="save" name="save"/> 
+        </center>
+    </div>
+  </form>
+  % except:
+  % endtry  
 
   ${next.body()}
 

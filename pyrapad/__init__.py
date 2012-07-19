@@ -45,6 +45,9 @@ def main(global_config, **settings):
     config.add_route( 'raw2', '{id}/raw' )
     config.add_view( 'pyrapad.views.raw', route_name='raw2', renderer='string' )
 
+    config.add_route( 'alter', '{id}/{uri:.*}/alter' )
+    config.add_view( 'pyrapad.views.alter', route_name='alter' )
+
     config.add_route( 'show', '{id}/{uri:.*}' )
     config.add_view( 'pyrapad.views.show', route_name='show', renderer='show.mako' )
 

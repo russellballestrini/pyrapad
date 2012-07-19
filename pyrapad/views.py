@@ -33,9 +33,6 @@ def save( request ):
         syntax = guess_lexer( data_form ).aliases[0]
 
         pad = Pad( uri, data_form, syntax )
-        #pad = Pad( uri )
-        #node = Node( data_form, syntax )
-        #pad.nodes.append( node )       
  
         DBSession.add( pad )
         DBSession.flush()
@@ -129,3 +126,34 @@ def syntaxes( request ):
     """list the supported syntaxes"""
     syntaxes = [ syntax[0] for syntax in get_all_syntaxes() ] 
     return { 'syntaxes': syntaxes }
+
+def alter( request ):
+    """alter the pad"""
+
+    # prettier varible
+    pad_id = request.matchdict['id']
+    # query for the pad object by id
+    pad = get_pad( pad_id )
+
+    if not pad: # redirect home if invalid id
+        return HTTPFound( location = '/' )
+
+    try: 
+        pad_id = request.matchdict['uri']
+    except KeyError:
+        return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
+
+    if 'save' in request.POST:
+
+        try: pad.uri = request.params['newuri'].replace( ' ', '-' )
+        except: pass 
+
+
+        try: pad.syntax = request.params['newsyntax']
+        except: pass
+
+        DBSession.add( pad )
+        DBSession.flush()
+
+    return HTTPFound( location = '/' + str(pad.id) + '/' + pad.uri )
+
