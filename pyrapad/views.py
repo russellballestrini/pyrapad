@@ -11,8 +11,6 @@ from pygments.util import ClassNotFound
 
 import webhelpers.paginate as paginate
 
-from datetime import datetime as dt
-
 from uuid import uuid4
 
 def save( request ):
@@ -118,9 +116,7 @@ def recent( request ):
     page_url = paginate.PageURL_WebOb( request )
     pads = paginate.Page( pads, current_page, url=page_url, items_per_page=20 )
 
-    timenow = dt.now()
-
-    return { 'pads': pads, 'pad_count': pad_count, 'current_page': current_page, 'timenow': timenow } 
+    return { 'pads': pads, 'pad_count': pad_count, 'current_page': current_page } 
 
 def syntaxes( request ):
     """list the supported syntaxes"""

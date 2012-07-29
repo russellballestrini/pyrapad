@@ -1,4 +1,4 @@
 
-def humandelta( c, delta, precision=1 ):
+def agohuman( c, dt, precision=2 ):
     import ago
-    return ago.human( delta, precision )
+    return ago.human( dt, precision )

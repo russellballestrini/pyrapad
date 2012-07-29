@@ -19,8 +19,7 @@
     data = pad.data.split( '\n', 7 )[:7]
     data = '\n'.join( data )
 
-    delta = timenow - pad.created
-    ago = m.humandelta( delta, 2 )
+    ago = m.agohuman( pad.created, 2 )
 
   %>
     <div style="padding-top: 40px;">
