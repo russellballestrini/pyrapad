@@ -124,24 +124,22 @@ ${ google_analytics() }
             <input type="submit" value="save" name="save"/> 
             </center>
         </div>
-    </form>
+      </form>
+      % if pad.wordwrap == True:
+        <style>
+        div.highlight pre {
+          white-space: pre-wrap;
+        }
+        div.linenodiv {
+          visibility:hidden;
+        }
+        table.highlighttable {
+          width:85%;
+        }
+        </style>
+      % endif
     % endif
 
-  
-
-  % if pad.wordwrap == True:
-  <style>
-  div.highlight pre {
-    white-space: pre-wrap;
-  }
-  div.linenodiv {
-    visibility:hidden;
-  }
-  table.highlighttable {
-    width:85%;
-  }
-  </style>
-  % endif
   ${next.body()}
 
   </div>
