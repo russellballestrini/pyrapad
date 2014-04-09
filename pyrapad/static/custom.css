@@ -69,6 +69,10 @@ input.semail{
   text-align:center;
 }
 
+#settingsdiv input[type=text] {
+  width: 100%;
+}
+
 #settingsdiv {
   position: relative;
   right: -50%;
@@ -81,6 +85,10 @@ input.semail{
   background-color: #002B36;
   background-color: #1c4e63;
   background-color: #194457;
+}
+
+.tiny-text {
+  font-size: .8em;
 }
 
 nav {

@@ -149,6 +149,9 @@ def alter( request ):
         try: pad.syntax = request.params['newsyntax']
         except: pass
 
+        if 'wordwrap' in request.params: pad.wordwrap = True
+        else: pad.wordwrap = False
+
         DBSession.add( pad )
         DBSession.flush()
 

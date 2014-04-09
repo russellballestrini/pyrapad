@@ -58,12 +58,10 @@
 // this toggles the dropdown
 function toggle( target, button, origtext ){
     if ( !$('#' + target + ":visible").size() ){
-        //$('#' + target).slideDown( "slow" );
         $('#' + target).fadeIn( "slow" );
         $('#' + button).text( "hide" );
     }
     else {
-        //$('#' + target).slideUp( "slow" );
         $('#' + target).fadeOut( "slow" );
         $('#' + button).text( origtext );
     }
@@ -107,12 +105,18 @@ ${ google_analytics() }
         <div id="settingsdiv">
             uri:
             <br/>
-            <input id="renametext" value="${pad.uri}" size="35" name="newuri"/> 
+            <input id="renametext" name="newuri" type="text" value="${pad.uri}"/> 
             <br/>
             <br/>
             syntax:
             <br/>
-            <input id="syntaxtext" value="${pad.syntax}" size="35" name="newsyntax"/>
+            <input id="syntaxtext" name="newsyntax" type="text" value="${pad.syntax}"/>
+            <br/>
+            <br/>
+            wordwrap:
+            <br/>
+            <input id="wordwrap" name="wordwrap" type="checkbox" ${'checked' if pad.wordwrap else ''}/>
+            <span class="tiny-text" style="text-align: top;">no horizontal scrolling</span>
             <br/>
             <br/>
             <center>
@@ -123,6 +127,21 @@ ${ google_analytics() }
     </form>
     % endif
 
+  
+
+  % if pad.wordwrap == True:
+  <style>
+  div.highlight pre {
+    white-space: pre-wrap;
+  }
+  div.linenodiv {
+    visibility:hidden;
+  }
+  table.highlighttable {
+    width:85%;
+  }
+  </style>
+  % endif
   ${next.body()}
 
   </div>

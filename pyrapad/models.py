@@ -33,6 +33,7 @@ class Pad( Base ):
     syntax   = Column( String(16), nullable = True )
     data     = Column( UnicodeText, nullable = False )
     disabled = Column( Boolean, default = False )
+    wordwrap = Column( Boolean, default = False )
     created  = Column( DateTime )
 
     def __init__( self, uri, data, syntax=None ):
@@ -44,7 +45,6 @@ class Pad( Base ):
 def get_all_pads( ):
     """return all pad object"""
     return DBSession.query( Pad ).order_by( desc( Pad.id ) ).filter( Pad.disabled == False ).all()
-
 
 def get_pad( pad_id ):
     """return pad object by id"""
