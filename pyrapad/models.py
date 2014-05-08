@@ -35,12 +35,14 @@ class Pad( Base ):
     disabled = Column( Boolean, default = False )
     wordwrap = Column( Boolean, default = False )
     created  = Column( DateTime )
+    ip_addr  = Column( String(64), nullable = True )
 
-    def __init__( self, uri, data, syntax=None ):
+    def __init__( self, uri, data, syntax=None, ip_addr=None ):
         self.uri = uri
         self.data = data
         self.syntax = syntax
         self.created = dt.now()
+        self.ip_addr = ip_addr
 
 def get_all_pads( ):
     """return all pad object"""
@@ -51,7 +53,7 @@ def get_pad( pad_id ):
     try:
         return DBSession.query( Pad ).filter( Pad.disabled == False ).filter( Pad.id == pad_id ).one()
     except NoResultFound:
-        return False
+        return None
 
 def get_all_syntaxes( ):
     """return a list of syntaxes"""

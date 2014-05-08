@@ -84,13 +84,15 @@ ${ google_analytics() }
           <li><a href="/">new pad</a></li> 
           % if pad:
               <li><a href="/${pad.id}/${pad.uri}/raw">raw pad</a></li> 
-              <li><a href="/${pad.id}/${pad.uri}/clone">clone pad</a></li> 
               <li><a href="javascript: toggle('settingsform', 'alterlink', 'alter pad')" id="alterlink">alter pad</a></li> 
+              <li><a href="/${pad.id}/${pad.uri}/edit">edit pad</a></li> 
+              <li><a href="/${pad.id}/${pad.uri}/clone">clone pad</a></li> 
               
           % else:
               <li>raw pad</li> 
-              <li>clone pad</li> 
               <li>alter pad</li> 
+              <li>edit pad</li> 
+              <li>clone pad</li> 
           % endif
           <li><a href="/random">random pad</a></li> 
           <li><a href="/recent">recent pads</a></li> 

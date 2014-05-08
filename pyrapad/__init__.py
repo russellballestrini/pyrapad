@@ -1,17 +1,21 @@
-from pyramid.config import Configurator
-from sqlalchemy import engine_from_config
-
 from pyrapad.models import initialize_sql
 
 from pyramid.events import BeforeRender
 
+from pyramid.config import Configurator
+
+from sqlalchemy import engine_from_config
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+
     engine = engine_from_config(settings, 'sqlalchemy.')
     initialize_sql(engine)
-    config = Configurator(settings=settings)
+
+    config = Configurator(
+        settings=settings,
+    )
 
     # inject renderer globals
     config.add_subscriber( inject_renderer_globals, BeforeRender )
@@ -38,6 +42,24 @@ def main(global_config, **settings):
 
     config.add_route( 'clone2', '{id}/clone' )
     config.add_view( 'pyrapad.views.clone', route_name='clone2', renderer='save.mako' )
+
+    #......... ip_addr in db must match ...............
+    config.add_route( 'edit', '{id}/{uri:.*}/edit' )
+    config.add_view( 'pyrapad.views.edit', route_name='edit', renderer='save.mako' )
+
+    #......... ip_addr in db must match ...............
+    config.add_route( 'edit2', '{id}/edit' )
+    config.add_view( 'pyrapad.views.edit', route_name='edit2', renderer='save.mako' )
+
+    '''
+    #......... ip_addr in db must match ...............
+    config.add_route( 'delete', '{id}/{uri:.*}/delete' )
+    config.add_view( 'pyrapad.views.delete', route_name='delete' )
+
+    #......... ip_addr in db must match ...............
+    config.add_route( 'delete2', '{id}/delete' )
+    config.add_view( 'pyrapad.views.delete', route_name='delete2' )
+    '''
 
     config.add_route( 'raw', '{id}/{uri:.*}/raw' )
     config.add_view( 'pyrapad.views.raw', route_name='raw', renderer='string' )
