@@ -15,30 +15,31 @@ from uuid import uuid4
 
 def save( request ):
     """homepage and save pad page"""  
-    try: data = request.params['data']
-    except: data = ''
+    try: data = unicode( request.params['data'] )
+    except: data = u''
 
-    try: data_form = unicode( request.params['data_form'] )
-    except: data_form = u''
-
-    if data_form:
+    if data:
         if request.params['semail'] != '': return HTTPNotFound()
 
-        uri = str( uuid4() ) 
-        
-        # this block supports syntax guessing,
-        # but it doesn't work well ...
-        syntax = guess_lexer( data_form ).aliases[0]
+        pad = get_pad(request.params['pad_id'])
 
-        pad = Pad( uri, data_form, syntax )
+        if pad != None:
+            # this is an edit of an existing pad.
+            if request.remote_addr == pad.ip_addr:
+                pad.data = data
+        else:
+            # this is an new or clone of an existing pad.
+
+            # try to guess syntax (doesn't work most of the time).
+            syntax = guess_lexer( data ).aliases[0]
+            pad = Pad( str(uuid4()), data, syntax, request.remote_addr )
  
         DBSession.add( pad )
         DBSession.flush()
 
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
-    else: # display form
-        return { 'title': 'Add a pad', 'data': data }
+    return { 'title' : 'Add a pad', 'pad_id' : '', 'data' : data }
 
 def show( request ):
     """show the pad"""
@@ -47,11 +48,11 @@ def show( request ):
     # query for the pad object by id
     pad = get_pad( pad_id )   
 
-    if not pad: # redirect home if invalid id
+    if pad == None: # redirect home if invalid id
         return HTTPFound( location = '/' )
 
-    try: # if missing url string
-        pad_id = request.matchdict['uri']
+    try: # make sure 'uri' key in matchdict
+        pad_uri = request.matchdict['uri']
     except KeyError:
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
@@ -71,10 +72,10 @@ def raw( request ):
     # query for the pad object by id
     pad = get_pad( pad_id )   
 
-    if not pad: # redirect home if invalid id
+    if pad == None: # redirect home if invalid id
         return HTTPFound( location = '/' )
 
-    try: # if missing url string
+    try: # make sure 'uri' key in matchdict
         pad_id = request.matchdict['uri']
     except KeyError:
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri + '/raw' )
@@ -88,11 +89,30 @@ def clone( request ):
     # query for the pad object by id
     pad = get_pad( pad_id )   
 
-    if not pad: # redirect home if invalid id
+    if pad == None: # redirect home if invalid id
         return HTTPFound( location = '/' )
 
-    return { 'title': 'Add a pad', 'data': pad.data }
+    return {
+      'title'  : 'Clone pad',
+      'pad_id' : '',
+      'data'   : pad.data
+    }
 
+def edit(request):
+    """edit the given pad"""
+    # prettier varible
+    pad_id = request.matchdict['id']
+    # query for the pad object by id
+    pad = get_pad( pad_id )
+
+    if pad == None: # redirect home if invalid id
+        return HTTPFound( location = '/' )
+
+    return {
+      'title'  : 'Edit pad',
+      'pad_id' : pad_id,
+      'data'   : pad.data
+    }
 
 def random( request ):
     """redirect to a random pad"""
@@ -132,11 +152,11 @@ def alter( request ):
     # query for the pad object by id
     pad = get_pad( pad_id )
 
-    if not pad: # redirect home if invalid id
+    if pad == None: # redirect home if invalid id
         return HTTPFound( location = '/' )
 
-    try: 
-        pad_id = request.matchdict['uri']
+    try: # make sure 'uri' key in matchdict
+        pad_uri = request.matchdict['uri']
     except KeyError:
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
@@ -144,7 +164,6 @@ def alter( request ):
 
         try: pad.uri = slugify( request.params['newuri'] )
         except: pass 
-
 
         try: pad.syntax = request.params['newsyntax']
         except: pass
