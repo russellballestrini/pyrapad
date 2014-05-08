@@ -19,13 +19,13 @@
     data = pad.data.split( '\n', 7 )[:7]
     data = '\n'.join( data )
 
-    ago = m.agohuman( pad.created, 2 )
+    ago = m.agohuman( pad.created, past_tense = 'created {} ago' )
 
   %>
     <div style="padding-top: 40px;">
       <b>
       ##<a href="/recent-${pad.syntax}-pads">${pad.syntax}:</a> 
-      created ${ago} ago  
+      ${ago}  
       <br/>
       <a href="${pad.id}/${pad.uri}">${pad.uri}</a> 
       </b>
