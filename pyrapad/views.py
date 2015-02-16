@@ -13,6 +13,14 @@ import webhelpers.paginate as paginate
 
 from uuid import uuid4
 
+def guess_lexer_name(data):
+    """Accept data, guess and return lexer name."""
+    try:
+        # this frequently fails and raises ClassNotFound.
+        return  guess_lexer( data ).aliases[0]
+    except ClassNotFound:
+        return 'text'
+
 def save( request ):
     """homepage and save pad page"""  
     try: data = unicode( request.params['data'] )
@@ -29,10 +37,8 @@ def save( request ):
                 pad.data = data
         else:
             # this is an new or clone of an existing pad.
-
-            # try to guess syntax (doesn't work most of the time).
-            syntax = guess_lexer( data ).aliases[0]
-            pad = Pad( str(uuid4()), data, syntax, request.remote_addr )
+            syntax = guess_lexer_name(data)
+            pad = Pad(str(uuid4()), data, syntax, request.remote_addr)
  
         DBSession.add( pad )
         DBSession.flush()
@@ -59,7 +65,8 @@ def show( request ):
     try: 
         lexer = get_lexer_by_name( pad.syntax )
     except ClassNotFound:
-        lexer = guess_lexer( pad.data )
+        lexer = guess_lexer_name( pad.data )
+
     formatter = HtmlFormatter( linenos=True, style='native' )
     pygdata = highlight( pad.data, lexer, formatter )
 

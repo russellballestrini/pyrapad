@@ -9,17 +9,20 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
+    'pyramid_mako',
+    'pyramid_debugtoolbar',
+    'pyramid_tm',
     'SQLAlchemy',
-    'MySQL-python',
     'transaction',
-    'repoze.tm2>=1.0b1', # default_commit_veto
+    'MySQL-python',
     'zope.sqlalchemy',
-    'WebError',
-    'pygments',
+    'pygments', # syntax highlighting
     'webhelpers', # pagination
     'ago', # human readable timedelta
     'pastescript', # paster
     'slugify', # powerful uri slug lib
+    'waitress', # web application server for development
+    'uwsgi', # web application server for production
     ]
 
 if sys.version_info[:3] < (2,5,0):
