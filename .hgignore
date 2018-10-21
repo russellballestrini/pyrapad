@@ -12,3 +12,5 @@ dev.ini
 data
 pyrapad/lib/gist
 *.egg*
+
+env/*
