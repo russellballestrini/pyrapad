@@ -77,27 +77,25 @@ ${ google_analytics() }
 
       <nav>  
 
-        <b><a href="http://${request.host}" style="text-decoration: none;">${request.host}</a></b> 
-
         <ul> 
-          <li><a href="#" onClick="document.forms[0].submit();">save pad</a></li> 
-          <li><a href="/">new pad</a></li> 
+          <li><a href="/">new</a></li> 
+          <li><a href="#" onClick="document.forms[0].submit();">save</a></li> 
           % if pad:
-              <li><a href="/${pad.id}/${pad.uri}/raw">raw pad</a></li> 
-              <li><a href="javascript: toggle('settingsform', 'alterlink', 'alter pad')" id="alterlink">alter pad</a></li> 
-              <li><a href="/${pad.id}/${pad.uri}/edit">edit pad</a></li> 
-              <li><a href="/${pad.id}/${pad.uri}/clone">clone pad</a></li> 
+              <li><a href="/${pad.id}/${pad.uri}/raw">raw</a></li> 
+              <li><a href="javascript: toggle('settingsform', 'alterlink', 'alter')" id="alterlink">alter</a></li> 
+              <li><a href="/${pad.id}/${pad.uri}/edit">edit</a></li> 
+              <li><a href="/${pad.id}/${pad.uri}/clone">clone</a></li> 
               
           % else:
-              <li>raw pad</li> 
-              <li>alter pad</li> 
-              <li>edit pad</li> 
-              <li>clone pad</li> 
+              <li>raw</li> 
+              <li>alter</li> 
+              <li>edit</li> 
+              <li>clone</li> 
           % endif
-          <li><a href="/random">random pad</a></li> 
-          <li><a href="/recent">recent pads</a></li> 
+          <li><a href="/random">random</a></li> 
+          <li><a href="/recent">recent</a></li> 
           ##<li><a href="/syntaxes">syntaxes</a></li> 
-          ##<li><a href="/about">about pad</a></li> 
+          ##<li><a href="/about">about</a></li> 
         </ul> 
 
       </nav> 
@@ -122,7 +120,7 @@ ${ google_analytics() }
             <br/>
             <br/>
             <center>
-            <input type="button" value="cancel" name="cancel" onClick="javascript: toggle('settingsform', 'alterlink', 'alter pad')"/> 
+            <input type="button" value="cancel" name="cancel" onClick="javascript: toggle('settingsform', 'alterlink', 'alter')"/> 
             <input type="submit" value="save" name="save"/> 
             </center>
         </div>
