@@ -17,10 +17,12 @@ requires = [
 
     # Model.
     #"MySQL-python",
+    # needed to pin because 2.0.0 breaks py 2.7 compatibility.
     "mysqlclient==1.4.6",
     "SQLAlchemy",
     "transaction",
-    "zope.sqlalchemy",
+    # needed to pin because 1.2 breaks py 2.7 compatibility.
+    "zope.sqlalchemy==1.1",
 
     # misc.
     #"pastescript", # paster
@@ -31,7 +33,7 @@ requires = [
     "waitress", # web application server for development
     "uwsgi", # web application server for production
     
-    # python 2.7 pinned libs, needed because libs dropping support.
+    # needed to pin because next 2.0.0 breaks py 2.7 compatibility.
     "MarkupSafe==1.1.1",
     ]
 
