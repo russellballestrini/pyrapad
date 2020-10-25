@@ -30,6 +30,9 @@ requires = [
     "slugify", # powerful uri slug lib
     "waitress", # web application server for development
     "uwsgi", # web application server for production
+    
+    # python 2.7 pinned libs, needed because libs dropping support.
+    "MarkupSafe==1.1.1",
     ]
 
 setup(
