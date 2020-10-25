@@ -13,13 +13,15 @@ import webhelpers.paginate as paginate
 
 from uuid import uuid4
 
+
 def guess_lexer_name(data):
     """Accept data, guess and return lexer name."""
     try:
         # this frequently fails and raises ClassNotFound.
-        return  guess_lexer( data ).aliases[0]
+        return guess_lexer(data).aliases[0]
     except ClassNotFound:
         return 'text'
+
 
 def save( request ):
     """homepage and save pad page"""  
@@ -47,6 +49,7 @@ def save( request ):
 
     return { 'title' : 'Add a pad', 'pad_id' : '', 'data' : data }
 
+
 def show( request ):
     """show the pad"""
     # prettier varible
@@ -63,14 +66,17 @@ def show( request ):
         return HTTPFound( location = '/' + str( pad.id ) + '/' + pad.uri )
 
     try: 
-        lexer = get_lexer_by_name( pad.syntax )
+        lexer = get_lexer_by_name(pad.syntax)
     except ClassNotFound:
-        lexer = guess_lexer_name( pad.data )
+        lexer = get_lexer_by_name(
+            guess_lexer_name(pad.data)
+        )
 
     formatter = HtmlFormatter( linenos=True, style='native' )
     pygdata = highlight( pad.data, lexer, formatter )
 
     return { 'pad': pad, 'pygdata': pygdata }
+
 
 def raw( request ):
     """show the raw text pad"""
@@ -89,6 +95,7 @@ def raw( request ):
 
     return pad.data
 
+
 def clone( request ):
     """clone the given pad"""
     # prettier varible
@@ -104,6 +111,7 @@ def clone( request ):
       'pad_id' : '',
       'data'   : pad.data
     }
+
 
 def edit(request):
     """edit the given pad"""
@@ -121,12 +129,14 @@ def edit(request):
       'data'   : pad.data
     }
 
+
 def random( request ):
     """redirect to a random pad"""
     from random import choice
     pads = get_all_pads()
     pad  = choice( pads ) 
     return HTTPFound( location = '/' + str(pad.id) + '/' + pad.uri )
+
 
 def recent( request ):
     """show most recent 20 pads and a few lines, and pagination"""
@@ -145,10 +155,12 @@ def recent( request ):
 
     return { 'pads': pads, 'pad_count': pad_count, 'current_page': current_page } 
 
+
 def syntaxes( request ):
     """list the supported syntaxes"""
     syntaxes = [ syntax[0] for syntax in get_all_syntaxes() ] 
     return { 'syntaxes': syntaxes }
+
 
 def alter( request ):
     """alter the pad"""
