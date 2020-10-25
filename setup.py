@@ -25,8 +25,8 @@ requires = [
     "zope.sqlalchemy==1.1",
 
     # misc.
-    #"pastescript", # paster
-    "pygments", # syntax highlighting
+    # needed to pin because 12.6.0 breaks py 2.7 compatibility.
+    "pygments==2.5.2", # syntax highlighting
     "webhelpers", # pagination
     "ago", # human readable timedelta
     "slugify", # powerful uri slug lib
