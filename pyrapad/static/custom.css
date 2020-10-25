@@ -113,7 +113,7 @@ nav li {
     nav {
         /* if we have room, allow nav to be fixed. */
         position: fixed; 
-        top: 15px; 
+        bottom: 15px; 
         right: 45px;
         grid-template-columns: 1fr;
     }
