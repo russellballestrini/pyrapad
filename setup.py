@@ -17,7 +17,7 @@ requires = [
 
     # Model.
     #"MySQL-python",
-    "mysqlclient",
+    "mysqlclient==1.4.6",
     "SQLAlchemy",
     "transaction",
     "zope.sqlalchemy",
