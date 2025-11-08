@@ -1,61 +1,86 @@
-import transaction
+"""Database models for pyrapad"""
+from datetime import datetime
+from typing import Optional
 
-from sqlalchemy import Integer, String, UnicodeText, Boolean, DateTime
-from sqlalchemy import Column, ForeignKey, desc, asc
-
-from sqlalchemy.sql.expression import distinct
-
+from sqlalchemy import String, UnicodeText, Boolean, DateTime, Integer, desc, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, scoped_session, sessionmaker
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import NoResultFound 
+from sqlalchemy.orm.exc import NoResultFound
 
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import scoped_session, sessionmaker, relation 
+from zope.sqlalchemy import register
 
-from zope.sqlalchemy import ZopeTransactionExtension
 
-from datetime import datetime as dt
+class Base(DeclarativeBase):
+    """Base class for all models"""
+    pass
 
-Base = declarative_base()
-DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
-def initialize_sql( engine ):
-    """Accept engine, configure DBsession and Base"""
-    DBSession.configure( bind=engine )
+# Create scoped session
+DBSession = scoped_session(sessionmaker())
+register(DBSession)
+
+
+def initialize_sql(engine):
+    """Initialize the database connection and create tables"""
+    DBSession.configure(bind=engine)
     Base.metadata.bind = engine
-    Base.metadata.create_all( engine )
+    Base.metadata.create_all(engine)
     return DBSession
 
-class Pad( Base ):
-    """This class represents a pad"""
-    __tablename__ = 'pad'
-    id       = Column( Integer, primary_key = True )
-    uri      = Column( String(64), unique=True, nullable = False )
-    syntax   = Column( String(16), nullable = True )
-    data     = Column( UnicodeText, nullable = False )
-    disabled = Column( Boolean, default = False )
-    wordwrap = Column( Boolean, default = False )
-    created  = Column( DateTime )
-    ip_addr  = Column( String(64), nullable = True )
 
-    def __init__( self, uri, data, syntax=None, ip_addr=None ):
+class Pad(Base):
+    """Model representing a code paste/pad"""
+    __tablename__ = 'pad'
+
+    # Primary key
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    # Pad identification and metadata
+    uri: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    syntax: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+
+    # Content
+    data: Mapped[str] = mapped_column(UnicodeText, nullable=False)
+
+    # Status and display options
+    disabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    wordwrap: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    # Audit fields
+    created: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    ip_addr: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+
+    def __init__(self, uri: str, data: str, syntax: Optional[str] = None,
+                 ip_addr: Optional[str] = None):
         self.uri = uri
         self.data = data
         self.syntax = syntax
-        self.created = dt.now()
+        self.created = datetime.now()
         self.ip_addr = ip_addr
 
-def get_all_pads( ):
-    """return all pad object"""
-    return DBSession.query( Pad ).order_by( desc( Pad.id ) ).filter( Pad.disabled == False ).all()
+    def __repr__(self) -> str:
+        return f"<Pad(id={self.id}, uri='{self.uri}', syntax='{self.syntax}')>"
 
-def get_pad( pad_id ):
-    """return pad object by id"""
+
+def get_all_pads():
+    """Return all non-disabled pads ordered by ID descending"""
+    stmt = select(Pad).where(Pad.disabled == False).order_by(desc(Pad.id))
+    return list(DBSession.execute(stmt).scalars().all())
+
+
+def get_pad(pad_id: int) -> Optional[Pad]:
+    """Return pad object by ID, or None if not found or disabled"""
     try:
-        return DBSession.query( Pad ).filter( Pad.disabled == False ).filter( Pad.id == pad_id ).one()
+        stmt = select(Pad).where(
+            Pad.disabled == False,
+            Pad.id == pad_id
+        )
+        return DBSession.execute(stmt).scalar_one()
     except NoResultFound:
         return None
 
-def get_all_syntaxes( ):
-    """return a list of syntaxes"""
-    return DBSession.query( distinct( Pad.syntax) ).order_by( Pad.syntax ).all()
 
+def get_all_syntaxes():
+    """Return a list of all distinct syntax values used in pads"""
+    stmt = select(Pad.syntax).distinct().order_by(Pad.syntax)
+    return list(DBSession.execute(stmt).all())

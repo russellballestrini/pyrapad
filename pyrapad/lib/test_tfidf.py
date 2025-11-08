@@ -138,9 +138,9 @@ for word in document2words:
     scores[word] = tfidf.tfidf( word, document, documentList ) 
 
 # sort dict by value
-# creates a list out of the dict 
-topsix = sorted( scores.iteritems(), key=lambda item: -item[1] )[0:6]
+# creates a list out of the dict
+topsix = sorted( scores.items(), key=lambda item: -item[1] )[0:6]
 
-slug = '-'.join( word[0] for word in topsix )    
+slug = '-'.join( word[0] for word in topsix )
 
-print slug
+print(slug)

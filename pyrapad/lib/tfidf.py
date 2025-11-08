@@ -41,4 +41,4 @@ if __name__ == '__main__':
     for word in documentList[documentNumber].split(None):
         words[word] = tfidf( word, documentList[documentNumber], documentList )
     for item in sorted( words.items(), key=itemgetter(1), reverse=True ):
-        print "%f <= %s" % (item[1], item[0])
+        print("%f <= %s" % (item[1], item[0]))

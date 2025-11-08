@@ -9,7 +9,7 @@ from pygments.lexers import get_lexer_by_name, guess_lexer
 from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
 
-import webhelpers.paginate as paginate
+import paginate
 
 from uuid import uuid4
 
@@ -24,9 +24,9 @@ def guess_lexer_name(data):
 
 
 def save( request ):
-    """homepage and save pad page"""  
-    try: data = unicode( request.params['data'] )
-    except: data = u''
+    """homepage and save pad page"""
+    try: data = str( request.params['data'] )
+    except: data = ''
 
     if data:
         if request.params['semail'] != '': return HTTPNotFound()
