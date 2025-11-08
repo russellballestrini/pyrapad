@@ -47,6 +47,10 @@ uwsgi_requires = [
     "uwsgi>=2.0.24,<3.0",
 ]
 
+filevault_requires = [
+    "filevault>=0.1.0",
+]
+
 dev_requires = [
     # Testing
     "pytest>=8.0.0,<9.0",
@@ -91,8 +95,9 @@ setup(
         "s3": s3_requires,
         "sandbox": sandbox_requires,
         "uwsgi": uwsgi_requires,
+        "filevault": filevault_requires,
         "production": mysql_requires + uwsgi_requires,
-        "all": mysql_requires + s3_requires + sandbox_requires + uwsgi_requires + dev_requires,
+        "all": mysql_requires + s3_requires + sandbox_requires + uwsgi_requires + filevault_requires + dev_requires,
     },
     entry_points={
         "paste.app_factory": ["main = pyrapad:main"],

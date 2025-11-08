@@ -1,150 +1,186 @@
-"""PyPI Vault storage backend - stores pad data in PyPI-compatible package repository"""
-import hashlib
+"""PyPI FileVault storage backend - stores pad data using filevault package"""
 from typing import Optional, Dict, Any
+from pathlib import Path
 from pyrapad.storage import StorageBackend
 
 
 class PyPIVaultBackend(StorageBackend):
     """
-    PyPI Vault storage backend
+    PyPI FileVault storage backend
 
-    Stores pad content using PyPI simple repository format.
-    This backend creates pseudo-packages where each pad is stored
-    as a "distribution" in a PyPI-like structure.
+    Uses the filevault package to store pad content in a hash-based
+    directory tree structure for efficient organization and retrieval.
+
+    See: https://pypi.org/project/filevault/
     """
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__(config)
-        self.vault_url = self.config.get('url', 'https://pypi.example.com')
-        self.base_path = self.config.get('path', './pypi-vault')
+        self.vault_path = self.config.get('path', './file-vault')
+        self.depth = self.config.get('depth', 2)
+        self.salt = self.config.get('salt', 'pyrapad')
 
-        # For file-based PyPI vault
-        if self.base_path:
-            from pathlib import Path
-            Path(self.base_path).mkdir(parents=True, exist_ok=True)
+        # Initialize vault (lazy loaded)
+        self._vault = None
 
-    def _get_package_name(self, key: str) -> str:
-        """Convert pad key to PyPI package name"""
-        # PyPI package names: lowercase, hyphens allowed
-        return f"pyrapad-{key.lower()}"
-
-    def _get_simple_path(self, package_name: str) -> str:
-        """Get the simple API path for a package"""
-        # PyPI simple repository structure: /simple/{package}/
-        return f"{self.base_path}/simple/{package_name}"
+    @property
+    def vault(self):
+        """Lazy load FileVault Vault instance"""
+        if self._vault is None:
+            try:
+                from filevault import Vault
+                self._vault = Vault(
+                    vaultpath=self.vault_path,
+                    depth=self.depth,
+                    salt=self.salt
+                )
+                # Ensure vault path exists
+                Path(self.vault_path).mkdir(parents=True, exist_ok=True)
+            except ImportError:
+                raise ImportError("filevault is required for PyPIVaultBackend. "
+                                  "Install with: pip install filevault")
+        return self._vault
 
     def save(self, key: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> str:
         """
-        Save content to PyPI vault
+        Save content to file vault
 
-        Creates a pseudo-package with the content as the distribution.
+        Uses the key to generate a hash-based filename and stores the content.
+
+        Args:
+            key: Unique identifier (pad URI)
+            content: The content to store
+            metadata: Optional metadata about the content
+
+        Returns:
+            The vault path where content was saved
         """
-        package_name = self._get_package_name(key)
+        # Create filename based on key (hash-based path)
+        vault_filename = self.vault.create_filename(key, '.txt', absolute=True)
 
-        # File-based PyPI vault
-        if self.base_path:
-            from pathlib import Path
+        # Ensure parent directory exists
+        Path(vault_filename).parent.mkdir(parents=True, exist_ok=True)
+
+        # Write content to vault file
+        with open(vault_filename, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+        # Save metadata if provided
+        if metadata:
             import json
+            meta_filename = vault_filename.replace('.txt', '.meta.json')
+            with open(meta_filename, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f)
 
-            package_dir = Path(self._get_simple_path(package_name))
-            package_dir.mkdir(parents=True, exist_ok=True)
-
-            # Create package file (using content hash as version)
-            content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()[:8]
-            version = f"1.0.{content_hash}"
-
-            # Save content as a "distribution"
-            dist_file = package_dir / f"{package_name}-{version}.txt"
-            dist_file.write_text(content, encoding='utf-8')
-
-            # Create index.html for simple API
-            index_html = f"""<!DOCTYPE html>
-<html>
-<head><title>Links for {package_name}</title></head>
-<body>
-<h1>Links for {package_name}</h1>
-<a href="{package_name}-{version}.txt">{package_name}-{version}.txt</a><br/>
-</body>
-</html>"""
-            (package_dir / 'index.html').write_text(index_html)
-
-            # Save metadata
-            if metadata:
-                meta_file = package_dir / f"{package_name}-{version}.meta.json"
-                meta_file.write_text(json.dumps(metadata), encoding='utf-8')
-
-            return f"pypi://{package_name}/{version}"
-
-        # Remote PyPI vault (would require HTTP API calls)
-        return f"{self.vault_url}/simple/{package_name}"
+        return vault_filename
 
     def retrieve(self, key: str) -> Optional[str]:
-        """Retrieve content from PyPI vault"""
-        package_name = self._get_package_name(key)
+        """
+        Retrieve content from file vault
 
-        if self.base_path:
-            from pathlib import Path
+        Args:
+            key: Unique identifier (pad URI)
 
-            package_dir = Path(self._get_simple_path(package_name))
-            if not package_dir.exists():
-                return None
+        Returns:
+            The stored content, or None if not found
+        """
+        vault_filename = self.vault.create_filename(key, '.txt', absolute=True)
 
-            # Find latest distribution file
-            dist_files = list(package_dir.glob(f"{package_name}-*.txt"))
-            if not dist_files:
-                return None
-
-            # Return content from latest version (sorted by name)
-            latest_file = sorted(dist_files)[-1]
-            return latest_file.read_text(encoding='utf-8')
-
-        return None
+        try:
+            with open(vault_filename, 'r', encoding='utf-8') as f:
+                return f.read()
+        except FileNotFoundError:
+            return None
 
     def delete(self, key: str) -> bool:
-        """Delete content from PyPI vault"""
-        package_name = self._get_package_name(key)
+        """
+        Delete content from file vault
 
-        if self.base_path:
-            from pathlib import Path
-            import shutil
+        Args:
+            key: Unique identifier (pad URI)
 
-            package_dir = Path(self._get_simple_path(package_name))
-            if package_dir.exists():
-                shutil.rmtree(package_dir)
-                return True
+        Returns:
+            True if deletion was successful, False otherwise
+        """
+        vault_filename = self.vault.create_filename(key, '.txt', absolute=True)
+        meta_filename = vault_filename.replace('.txt', '.meta.json')
 
-        return False
+        deleted = False
+        try:
+            Path(vault_filename).unlink()
+            deleted = True
+        except FileNotFoundError:
+            pass
+
+        # Also delete metadata if it exists
+        try:
+            Path(meta_filename).unlink()
+        except FileNotFoundError:
+            pass
+
+        return deleted
 
     def exists(self, key: str) -> bool:
-        """Check if content exists in PyPI vault"""
-        package_name = self._get_package_name(key)
+        """
+        Check if content exists in file vault
 
-        if self.base_path:
-            from pathlib import Path
-            package_dir = Path(self._get_simple_path(package_name))
-            return package_dir.exists()
+        Args:
+            key: Unique identifier (pad URI)
 
-        return False
+        Returns:
+            True if content exists, False otherwise
+        """
+        vault_filename = self.vault.create_filename(key, '.txt', absolute=True)
+        return Path(vault_filename).exists()
 
     def list_keys(self, prefix: Optional[str] = None) -> list[str]:
-        """List all keys in PyPI vault"""
+        """
+        List all keys in file vault
+
+        Note: This requires iterating through the vault directory structure
+        and reverse-engineering keys from filenames, which is not directly
+        supported by filevault. This is a limitation of the hash-based storage.
+
+        Args:
+            prefix: Optional prefix to filter keys (not supported)
+
+        Returns:
+            List of storage keys (may be limited)
+        """
         keys = []
+        vault_path = Path(self.vault_path)
 
-        if self.base_path:
-            from pathlib import Path
+        if not vault_path.exists():
+            return keys
 
-            simple_dir = Path(self.base_path) / 'simple'
-            if not simple_dir.exists():
-                return keys
-
-            for package_dir in simple_dir.iterdir():
-                if package_dir.is_dir():
-                    # Extract original key from package name
-                    # pyrapad-abc123 -> abc123
-                    package_name = package_dir.name
-                    if package_name.startswith('pyrapad-'):
-                        key = package_name[8:]  # Remove 'pyrapad-' prefix
-                        if prefix is None or key.startswith(prefix):
-                            keys.append(key)
+        # Walk through the vault directory to find all .txt files
+        for txt_file in vault_path.rglob('*.txt'):
+            # Extract relative path from vault root
+            rel_path = txt_file.relative_to(vault_path)
+            # The filename (without .txt) is the hash
+            # We can't easily reverse the hash to get the original key
+            # So we'll return the hash as the identifier
+            hash_key = txt_file.stem
+            keys.append(hash_key)
 
         return sorted(keys)
+
+    def get_metadata(self, key: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieve metadata for a key
+
+        Args:
+            key: Unique identifier (pad URI)
+
+        Returns:
+            Metadata dictionary, or None if not found
+        """
+        vault_filename = self.vault.create_filename(key, '.txt', absolute=True)
+        meta_filename = vault_filename.replace('.txt', '.meta.json')
+
+        try:
+            import json
+            with open(meta_filename, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return None
