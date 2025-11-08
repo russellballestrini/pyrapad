@@ -1,12 +1,12 @@
-"""PyPI FileVault storage backend - stores pad data using filevault package"""
+"""FileVault storage backend - stores pad data using filevault package"""
 from typing import Optional, Dict, Any
 from pathlib import Path
 from pyrapad.storage import StorageBackend
 
 
-class PyPIVaultBackend(StorageBackend):
+class FileVaultBackend(StorageBackend):
     """
-    PyPI FileVault storage backend
+    FileVault storage backend
 
     Uses the filevault package to store pad content in a hash-based
     directory tree structure for efficient organization and retrieval.

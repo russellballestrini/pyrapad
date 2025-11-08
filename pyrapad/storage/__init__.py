@@ -88,7 +88,7 @@ def get_storage_backend(backend_type: str, config: Optional[Dict[str, Any]] = No
     Factory function to get the appropriate storage backend
 
     Args:
-        backend_type: Type of backend ('database', 'filesystem', 's3', 'pypi_vault')
+        backend_type: Type of backend ('database', 'filesystem', 's3', 'filevault')
         config: Configuration for the backend
 
     Returns:
@@ -100,13 +100,13 @@ def get_storage_backend(backend_type: str, config: Optional[Dict[str, Any]] = No
     from pyrapad.storage.database import DatabaseBackend
     from pyrapad.storage.filesystem import FilesystemBackend
     from pyrapad.storage.s3 import S3Backend
-    from pyrapad.storage.pypi_vault import PyPIVaultBackend
+    from pyrapad.storage.filevault import FileVaultBackend
 
     backends = {
         'database': DatabaseBackend,
         'filesystem': FilesystemBackend,
         's3': S3Backend,
-        'pypi_vault': PyPIVaultBackend,
+        'filevault': FileVaultBackend,
     }
 
     if backend_type not in backends:

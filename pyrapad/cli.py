@@ -11,10 +11,10 @@ def migrate_storage():
 
     parser = argparse.ArgumentParser(description='Migrate pad storage between backends')
     parser.add_argument('--from', dest='source', required=True,
-                        choices=['database', 'filesystem', 's3', 'pypi_vault'],
+                        choices=['database', 'filesystem', 's3', 'filevault'],
                         help='Source storage backend')
     parser.add_argument('--to', dest='dest', required=True,
-                        choices=['database', 'filesystem', 's3', 'pypi_vault'],
+                        choices=['database', 'filesystem', 's3', 'filevault'],
                         help='Destination storage backend')
     parser.add_argument('--db-url', default='sqlite:///pyrapad.db',
                         help='Database URL for database backend')
@@ -22,8 +22,12 @@ def migrate_storage():
                         help='Filesystem path for filesystem backend')
     parser.add_argument('--s3-bucket', help='S3 bucket name')
     parser.add_argument('--s3-region', default='us-east-1', help='S3 region')
-    parser.add_argument('--pypi-path', default='./pypi-vault',
-                        help='PyPI vault path')
+    parser.add_argument('--filevault-path', default='./file-vault',
+                        help='FileVault path')
+    parser.add_argument('--filevault-depth', default=2, type=int,
+                        help='FileVault directory depth')
+    parser.add_argument('--filevault-salt', default='pyrapad',
+                        help='FileVault hash salt')
     parser.add_argument('--dry-run', action='store_true',
                         help='Show what would be migrated without actually doing it')
 
@@ -88,8 +92,10 @@ def _build_config(args, backend_type):
     elif backend_type == 's3':
         config['bucket'] = args.s3_bucket
         config['region'] = args.s3_region
-    elif backend_type == 'pypi_vault':
-        config['path'] = args.pypi_path
+    elif backend_type == 'filevault':
+        config['path'] = args.filevault_path
+        config['depth'] = args.filevault_depth
+        config['salt'] = args.filevault_salt
 
     return config
 

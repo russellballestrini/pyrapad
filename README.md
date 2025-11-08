@@ -15,7 +15,7 @@ A modern code paste sharing application with syntax highlighting, code execution
   - Database (SQLite/MySQL)
   - Filesystem
   - AWS S3 / S3-compatible storage
-  - PyPI Vault (custom package-based storage)
+  - FileVault (hash-based directory tree using filevault package)
 - **Modern Python 3.11+**: Fully migrated from Python 2.7
 - **SQLAlchemy 2.0**: Type-safe models with Alembic migrations
 - **Pyramid 2.x**: Latest web framework features
@@ -91,9 +91,11 @@ storage.backend = s3
 storage.s3.bucket = my-pads
 storage.s3.region = us-east-1
 
-# PyPI Vault storage
-storage.backend = pypi_vault
-storage.pypi_vault.path = ./pypi-vault
+# FileVault storage
+storage.backend = filevault
+storage.filevault.path = ./file-vault
+storage.filevault.depth = 2
+storage.filevault.salt = pyrapad
 ```
 
 ### Migrating Storage
