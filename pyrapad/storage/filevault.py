@@ -37,7 +37,7 @@ class FileVaultBackend(StorageBackend):
                 # Ensure vault path exists
                 Path(self.vault_path).mkdir(parents=True, exist_ok=True)
             except ImportError:
-                raise ImportError("filevault is required for PyPIVaultBackend. "
+                raise ImportError("filevault is required for FileVaultBackend. "
                                   "Install with: pip install filevault")
         return self._vault
 
